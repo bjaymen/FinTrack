@@ -1,31 +1,33 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
+import axios from '../api/axios';
+import { useNavigate } from 'react-router-dom';
 
-export const AuthContext = createContext();
+const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
-  // Persist login state (optional for now)
-  useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem('fintrackUser'));
-    if (storedUser) {
-      setUser(storedUser);
-    }
-  }, []);
+  const login = async (data) => {
+    const res = await axios.post('/auth/login', data);
+    setUser(res.data.user);
+  };
 
-  const login = (userData) => {
-    setUser(userData);
-    localStorage.setItem('fintrackUser', JSON.stringify(userData));
+  const register = async (data) => {
+    const res = await axios.post('/auth/register', data);
+    setUser(res.data.user);
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('fintrackUser');
+    navigate('/login');
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );
-};
+}
+
+export const useAuth = () => useContext(AuthContext);

@@ -1,31 +1,21 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
 const cors = require('cors');
-
-// Import routes
-const authRoutes = require('./routes/authRoutes');
-
-// Load environment variables
-dotenv.config();
+const transactionRoutes = require('./routes/transactions');
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Routes
-app.use('/api/auth', authRoutes);
-const transactionRoutes = require('./routes/transactionRoutes');
 app.use('/api/transactions', transactionRoutes);
 
-// Connect to MongoDB and start server
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => {
-    app.listen(process.env.PORT, () =>
-      console.log(`Server running on port ${process.env.PORT}`)
-    );
-  })
-  .catch((err) => console.error('MongoDB connection error:', err));
+mongoose.connect('mongodb://localhost:27017/finance-dashboard', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => {
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+})
+.catch((error) => console.log(error.message));

@@ -1,9 +1,16 @@
-# Node modules
-client/node_modules
-server/node_modules
+# dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
 
-# Environment variables
-server/.env
+# build
+dist/
+build/
 
-# Build output
-dist
+# env files
+.env
+.env.local
+
+# misc
+.DS_Store
+.vscode

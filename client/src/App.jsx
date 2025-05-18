@@ -1,17 +1,12 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './pages/Login';
-import Register from './pages/Register';
+import React from 'react';
+import Dashboard from './pages/Dashboard';
 
-const App = () => {
+function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<div className="text-center mt-10 text-2xl">Welcome to FinTrack</div>} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
-    </Router>
+    <div className="min-h-screen bg-gray-100">
+      <Dashboard />
+    </div>
   );
-};
+}
 
 export default App;
